@@ -16,6 +16,7 @@ Created with assistance from aider.chat.
 """
 
 import pickle
+import re
 
 import click
 import pandas as pd
@@ -90,6 +91,34 @@ def main(
     # Load the file into a DataFrame
     # Using tab separator to match the ICD-11 MMS SimpleTabulation format
     df = pd.read_csv(filepath, sep="\t")
+
+    # Clean BrowserLink column to extract only the URL
+    # The column contains Excel-style hyperlink formulas in the format:
+    # =hyperlink("https://...", "browser")
+    # We extract just the URL portion to make the links directly usable
+    if "BrowserLink" in df.columns:
+
+        def extract_url(link: str) -> str:
+            """Extract URL from Excel hyperlink formula.
+
+            Parameters
+            ----------
+            link : str
+                Excel hyperlink formula string.
+
+            Returns
+            -------
+            str
+                Extracted URL, or original value if no match found.
+            """
+            if pd.isna(link):
+                return link
+            match = re.search(r'=hyperlink\("(.+?)","', link)
+            if match:
+                return match.group(1)
+            return link
+
+        df["BrowserLink"] = df["BrowserLink"].apply(extract_url)
 
     # Build a dictionary mapping chapter numbers to chapter titles
     # This allows us to look up chapter titles for blocks
