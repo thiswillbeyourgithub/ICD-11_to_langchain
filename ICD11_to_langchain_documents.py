@@ -44,8 +44,14 @@ version = "0.1.0"
     type=click.Path(),
     help="Output path for pickled documents (default: ICD-11.pickle).",
 )
+@click.option(
+    "--strip-bullets",
+    is_flag=True,
+    default=True,
+    help="Remove leading '- ' from page_content (default: True).",
+)
 def main(
-    filepath: str, language: str, remove_unused_metadata: bool, output: str
+    filepath: str, language: str, remove_unused_metadata: bool, output: str, strip_bullets: bool
 ) -> None:
     """Load a file into a pandas DataFrame and create langchain Documents.
 
@@ -60,6 +66,9 @@ def main(
         If True, remove metadata fields where pd.isna(value) is True.
     output : str
         Path where the pickled list of langchain Documents will be saved.
+    strip_bullets : bool
+        If True, remove all leading "- " prefixes from page_content.
+        This handles cases where multiple "- " prefixes are present.
 
     Notes
     -----
@@ -100,6 +109,13 @@ def main(
     documents = []
     for _, row in df.iterrows():
         page_content = f"{row[title_column]} ({row['ChapterTitle']})"
+        
+        # Strip leading bullets if requested
+        # This removes all leading "- " prefixes that may be present
+        if strip_bullets:
+            while page_content.startswith("- "):
+                page_content = page_content[2:]
+        
         metadata = row.to_dict()
 
         # Remove unused metadata fields if requested
