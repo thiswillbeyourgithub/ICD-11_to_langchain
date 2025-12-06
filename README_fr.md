@@ -1,59 +1,59 @@
-# ICD-11 to Langchain Documents
+# ICD-11 vers Documents Langchain
 
-> **Note:** A French version of this README is available at [README_fr.md](./README_fr.md)
+> **Note :** Une version anglaise de ce README est disponible dans [README.md](./README.md)
 
-This project converts ICD-11 (International Classification of Diseases, 11th Revision) data into langchain Document objects for use in RAG (Retrieval-Augmented Generation) applications and other langchain-based workflows.
+Ce projet convertit les données ICD-11 (Classification internationale des maladies, 11ème révision) en objets Document langchain pour une utilisation dans des applications RAG (Retrieval-Augmented Generation) et d'autres flux de travail basés sur langchain.
 
-Created with assistance from [aider.chat](https://github.com/Aider-AI/aider/).
+Créé avec l'aide de [aider.chat](https://github.com/Aider-AI/aider/).
 
-## What It Does
+## Fonctionnalités
 
-The `ICD11_to_langchain_documents.py` script:
-- Loads ICD-11 data from a TSV file (WHO's SimpleTabulation format)
-- Converts each entry into a langchain `Document` object
-- Enriches blocks and categories with their chapter titles for better context
-- Saves the documents as a pickle file for easy loading in other scripts
+Le script `ICD11_to_langchain_documents.py` :
+- Charge les données ICD-11 depuis un fichier TSV (format SimpleTabulation de l'OMS)
+- Convertit chaque entrée en objet `Document` langchain
+- Enrichit les blocs et catégories avec leurs titres de chapitre pour un meilleur contexte
+- Sauvegarde les documents dans un fichier pickle pour un chargement facile dans d'autres scripts
 
-Each Document contains:
-- **page_content**: The ICD-11 title and chapter title for context
-- **metadata**: All available fields from the original data (code, description, etc.)
+Chaque Document contient :
+- **page_content** : Le titre ICD-11 et le titre du chapitre pour le contexte
+- **metadata** : Tous les champs disponibles des données originales (code, description, etc.)
 
-## Usage
+## Utilisation
 
-Run the script using `uv` (which handles dependencies automatically via PEP 723):
+Exécutez le script avec `uv` (qui gère automatiquement les dépendances via PEP 723) :
 
 ```bash
-uv run ICD11_to_langchain_documents.py path/to/SimpleTabulation-ICD-11-MMS.txt
+uv run ICD11_to_langchain_documents.py chemin/vers/SimpleTabulation-ICD-11-MMS.txt
 ```
 
 ### Options
 
-- `--language [fr|en]`: Language for titles (default: `fr` for French)
-  - `fr`: Uses the `Title` column
-  - `en`: Uses the `TitleEN` column
-- `--remove_unused_metadata`: Remove metadata fields with missing values (default: True)
-- `--output PATH`: Output path for pickled documents (default: `ICD-11.pickle`)
+- `--language [fr|en]` : Langue pour les titres (par défaut : `fr` pour le français)
+  - `fr` : Utilise la colonne `Title`
+  - `en` : Utilise la colonne `TitleEN`
+- `--remove_unused_metadata` : Supprime les champs de métadonnées avec des valeurs manquantes (par défaut : True)
+- `--output CHEMIN` : Chemin de sortie pour les documents sérialisés (par défaut : `ICD-11.pickle`)
 
-### Examples
+### Exemples
 
-Convert French ICD-11 data:
+Convertir les données ICD-11 en français :
 ```bash
 uv run ICD11_to_langchain_documents.py SimpleTabulation-ICD-11-MMS-fr.txt --language fr
 ```
 
-Convert English ICD-11 data with custom output:
+Convertir les données ICD-11 en anglais avec une sortie personnalisée :
 ```bash
 uv run ICD11_to_langchain_documents.py SimpleTabulation-ICD-11-MMS-en.txt --language en --output ICD11-en.pickle
 ```
 
-## Getting ICD-11 Data
+## Obtenir les données ICD-11
 
-### French Version
+### Version française
 
-1. Go to https://icd.who.int/browse/2025-01/mms/fr
-2. Click on `Info` then on `Fichier du tableur` (Spreadsheet file)
-3. Download the `.txt` file
-4. Verify the SHA-256 hash:
+1. Allez sur https://icd.who.int/browse/2025-01/mms/fr
+2. Cliquez sur `Info` puis sur `Fichier du tableur`
+3. Téléchargez le fichier `.txt`
+4. Vérifiez le hash SHA-256 :
 
 ```
 d640109d998f8b2cb7a22a31574a10ec7a03b67a47f786e9ca7f3d72cbabef25  SimpleTabulation-ICD-11-MMS-fr.txt
@@ -61,17 +61,17 @@ d640109d998f8b2cb7a22a31574a10ec7a03b67a47f786e9ca7f3d72cbabef25  SimpleTabulati
 c14f94ad6fe0e75c1993ea38c29a5886bab0849dd507cd5f4ae710a11793e2e1  SimpleTabulation-ICD-11-MMS-fr.zip
 ```
 
-### English Version
+### Version anglaise
 
-1. Go to https://icd.who.int/browse/2025-01/mms/en
-2. Click on `Info` then on `Spreadsheet file`
-3. Download the `.txt` file
+1. Allez sur https://icd.who.int/browse/2025-01/mms/en
+2. Cliquez sur `Info` puis sur `Spreadsheet file` (Fichier du tableur)
+3. Téléchargez le fichier `.txt`
 
-## Requirements
+## Prérequis
 
-The script uses PEP 723 inline dependencies (Python 3.11+):
+Le script utilise les dépendances inline PEP 723 (Python 3.11+) :
 - pandas
 - click
 - langchain_core
 
-No separate installation needed when using `uv run`.
+Aucune installation séparée n'est nécessaire lors de l'utilisation de `uv run`.
