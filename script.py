@@ -3,6 +3,7 @@
 # dependencies = [
 #     "pandas",
 #     "click",
+#     "langchain_core",
 # ]
 # ///
 
@@ -16,6 +17,7 @@ Created with assistance from aider.chat.
 
 import click
 import pandas as pd
+from langchain_core.documents import Document
 
 
 @click.command()
@@ -42,17 +44,27 @@ def main(filepath: str) -> None:
     chapter_titles = {}
     for _, row in df.iterrows():
         if row["ClassKind"] == "chapter":
-            chapter_titles[int(row["ChapterNo"])] = row["Title"]
+            chapter_titles[row["ChapterNo"]] = row["Title"]
 
     # Add ChapterTitle column for blocks
     # For each block row, look up the chapter title using its ChapterNo
     df["ChapterTitle"] = ""
     for idx, row in df.iterrows():
-        if row["ClassKind"] == "block":
-            chapter_no = int(row["ChapterNo"])
+        if row["ClassKind"] in ["block", "category"]:
+            chapter_no = row["ChapterNo"]
             df.at[idx, "ChapterTitle"] = chapter_titles.get(chapter_no, "")
 
-    # Open breakpoint for interactive exploration of the DataFrame
+    # Convert each row into a langchain Document
+    # page_content contains the title and chapter title for context
+    # metadata contains all row data for filtering and reference
+    documents = []
+    for _, row in df.iterrows():
+        page_content = f"{row['Title']} ({row['ChapterTitle']})"
+        metadata = row.to_dict()
+        doc = Document(page_content=page_content, metadata=metadata)
+        documents.append(doc)
+
+    # Open breakpoint for interactive exploration of the DataFrame and documents
     breakpoint()
 
 
