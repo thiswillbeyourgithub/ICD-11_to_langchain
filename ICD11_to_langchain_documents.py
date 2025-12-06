@@ -40,9 +40,9 @@ version = "0.1.0"
 )
 @click.option(
     "--output",
-    default="ICD-11.pickle",
+    default=f"ICD-11-v{version}.pickle",
     type=click.Path(),
-    help="Output path for pickled documents (default: ICD-11.pickle).",
+    help=f"Output path for pickled documents (default: ICD-11-v{version}.pickle).",
 )
 @click.option(
     "--strip-bullets",
