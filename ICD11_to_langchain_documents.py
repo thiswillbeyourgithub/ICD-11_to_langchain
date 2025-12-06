@@ -51,7 +51,11 @@ version = "0.1.0"
     help="Remove leading '- ' from page_content (default: True).",
 )
 def main(
-    filepath: str, language: str, remove_unused_metadata: bool, output: str, strip_bullets: bool
+    filepath: str,
+    language: str,
+    remove_unused_metadata: bool,
+    output: str,
+    strip_bullets: bool,
 ) -> None:
     """Load a file into a pandas DataFrame and create langchain Documents.
 
@@ -109,13 +113,13 @@ def main(
     documents = []
     for _, row in df.iterrows():
         page_content = f"{row[title_column]} ({row['ChapterTitle']})"
-        
+
         # Strip leading bullets if requested
         # This removes all leading "- " prefixes that may be present
         if strip_bullets:
             while page_content.startswith("- "):
                 page_content = page_content[2:]
-        
+
         metadata = row.to_dict()
 
         # Remove unused metadata fields if requested
