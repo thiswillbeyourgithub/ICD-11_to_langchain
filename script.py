@@ -22,12 +22,12 @@ import pandas as pd
 @click.argument("filepath", type=click.Path(exists=True))
 def main(filepath: str) -> None:
     """Load a file into a pandas DataFrame and open a breakpoint.
-    
+
     Parameters
     ----------
     filepath : str
         Path to the file to load into a DataFrame.
-        
+
     Notes
     -----
     The file is loaded as tab-separated values (TSV) by default, which matches
@@ -36,7 +36,7 @@ def main(filepath: str) -> None:
     # Load the file into a DataFrame
     # Using tab separator to match the ICD-11 MMS SimpleTabulation format
     df = pd.read_csv(filepath, sep="\t")
-    
+
     # Open breakpoint for interactive exploration of the DataFrame
     breakpoint()
 
