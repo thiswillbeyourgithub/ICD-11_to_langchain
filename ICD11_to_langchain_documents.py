@@ -22,6 +22,9 @@ import pandas as pd
 from langchain_core.documents import Document
 
 
+version = "0.1.0"
+
+
 @click.command()
 @click.argument("filepath", type=click.Path(exists=True))
 @click.option(
