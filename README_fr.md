@@ -4,6 +4,8 @@
 
 Ce projet convertit les données ICD-11 (Classification internationale des maladies, 11ème révision) en objets Document langchain pour une utilisation dans des applications RAG (Retrieval-Augmented Generation) et d'autres flux de travail basés sur langchain.
 
+Ce projet a été créé pour construire un moteur de recherche basé sur des embeddings pour les codes de classification ICD-11 via une interface web Gradio. L'interface de recherche est disponible sur [GradioSearcher](https://github.com/thiswillbeyourgithub/GradioSearcher).
+
 Créé avec l'aide de [aider.chat](https://github.com/Aider-AI/aider/).
 
 ## Fonctionnalités
