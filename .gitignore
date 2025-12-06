@@ -1,4 +1,5 @@
 SimpleTabulation-ICD-11-MMS-fr.*
+*.pickle
 .env
 .env.leave
 .aider*
