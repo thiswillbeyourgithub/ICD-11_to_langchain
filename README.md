@@ -48,6 +48,20 @@ Convert English ICD-11 data with custom output:
 uv run ICD11_to_langchain_documents.py SimpleTabulation-ICD-11-MMS-en.txt --language en --output ICD11-en.pickle
 ```
 
+## Creating the Search Engine
+
+Once you've generated the pickle file, you can create a search interface using GradioSearcher:
+
+```bash
+# Install GradioSearcher
+uv pip install gradioSearch -U
+
+# Create the search engine
+python -m gradioSearch --db_path ./ICD-11-v0.2.0.pickle --embedding_model "minishlab/potion-multilingual-128M" --output-db-path ./faiss-ICD-11_v2 --metadata_keys="Code,BrowserLink,Foundation URI, Linearization URI"
+```
+
+This will create an embeddings-based search interface that allows you to search through the ICD-11 classification codes efficiently.
+
 ## Getting ICD-11 Data
 
 ### French Version
