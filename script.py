@@ -41,7 +41,9 @@ from langchain_core.documents import Document
     type=click.Path(),
     help="Output path for pickled documents (default: ICD-11.pickle).",
 )
-def main(filepath: str, language: str, remove_unused_metadata: bool, output: str) -> None:
+def main(
+    filepath: str, language: str, remove_unused_metadata: bool, output: str
+) -> None:
     """Load a file into a pandas DataFrame and create langchain Documents.
 
     Parameters
@@ -96,12 +98,12 @@ def main(filepath: str, language: str, remove_unused_metadata: bool, output: str
     for _, row in df.iterrows():
         page_content = f"{row[title_column]} ({row['ChapterTitle']})"
         metadata = row.to_dict()
-        
+
         # Remove unused metadata fields if requested
         # This cleans up the metadata by removing fields with pd.isna values
         if remove_unused_metadata:
             metadata = {k: v for k, v in metadata.items() if not pd.isna(v)}
-        
+
         doc = Document(page_content=page_content, metadata=metadata)
         documents.append(doc)
 
@@ -109,7 +111,7 @@ def main(filepath: str, language: str, remove_unused_metadata: bool, output: str
     # This allows the documents to be loaded and used in other scripts
     with open(output, "wb") as f:
         pickle.dump(documents, f)
-    
+
     click.echo(f"Successfully saved {len(documents)} documents to {output}")
 
 
