@@ -23,7 +23,7 @@ import pandas as pd
 from langchain_core.documents import Document
 
 
-version = "0.1.0"
+version = "0.2.0"
 
 
 @click.command()
